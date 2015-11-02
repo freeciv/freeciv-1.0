@@ -1,0 +1,23 @@
+Scenario: Crecy-4.sav
+====================
+
+Max number of players: 4
+Nations: England, France, Russia and Turkey
+Tech: All players got the same technology
+
+
+Situation between England and France:
+=====================================
+
+The battle at Crécy and Calais in France in 1345.  
+
+King Edward III has established an army in France, his main goal is
+to eliminate "Fillip of Valois" who named himself: King of France.
+
+Situation between Russia and Turkey:
+====================================
+Timur Lenk, the tyrant of Russia, has conquered Afghanistan. His army has
+killed everything on their way and right now he has set his eyes on Ankara.
+Bayezid of Turkey has noticed the enemy and has established an army of
+85,000 against Timur's 145,000 men.
+

@@ -1,0 +1,70 @@
+This document contains some misc. thoughts about Freeciv.
+
+The language:
+-------------
+Freeciv is written in C as opposed to C++ or Java. We settled for C,
+as we wanted the game to be easy to compile/run on as many unix systems
+as possible. Unless we had sticked to pure ARM C++(and even then), we
+couldn't have archived the same degree of portability. We could have 
+limited us to g++, but decided against it in favor of more platform
+support. We decided against Java, mostly because of speed considerations.
+Today that still seems to be the right decision, as Java+JIT is still
+quite rare on unix platforms. Also the AWT in JDK 1.0 doesn't look ready
+for real developing yet(as JDK 1.1 - still in beta - is a proof of). 
+As a sidenote, as the project grew in size, we very often wished we
+could use OO techniques, as this game really could benefit from an 
+OO design.
+
+The widget set:
+---------------
+We decided to use the athena widget set, as opposed to Motif or one of
+the free available widget sets. Motif was not an option as there's no
+free implementation yet(Lesstif is getting close though), and none of
+the free ones seems to be sufficient established/widespread. That said
+Xaw starts showing it's age(didn't it always?) and is truely a pain to 
+work with. On top of that it doesn't even look good.
+
+Civ as a multiplayer game:
+--------------------------
+Although civilization has been available as a multiplayer game for
+some time now(civnet, openciv), one can still question how fit the
+game really is for multiplaying. At least one of the freeciv developers 
+tends to become quite bored late in the game, when the turn length 
+never goes below 3 minutes, because some players keeps fiddeling with
+their cities. Ofcause they refuse to decrease the timeout. One issue
+concerning the gameplay is what to do when one player is loosing. Should
+she keep playing for another 3 hours, knowing the game is lost, only to
+amuse the other players? Most of us would in the same position just quit
+the game in a single player game against the computer AI. Anyway all
+this is just a matter of taste, and this section does not represent the
+official attitude of the freeciv team ;)
+
+Simultaneous moving:
+--------------------
+Currently Freeciv only supports simultaneous moving. One nice effect of
+this is that the overall game length is much smaller. However some times
+it results in ridiculous action situation at the start of a turn, when
+for example two attack units is standing close. We do intend to fix this
+in a later release. The best idea we got so far is to allow 
+players to issue goto orders for units with 0 movepoints(they can't get
+focus as of v1.0). When a new turn begins, the server will randomly 
+select units with a goto order, and move the unit. In the case of the
+two attack units, this would give them both equal probability for
+striking first. Another solution would be to temporary play with
+synchronous moving when such situations occurs. We'd rather avoid that
+solution, as it increases the game length. In case you have another 
+solution then please let us know.
+
+The future:
+-----------
+No question that freeciv 1.0 still contains a range of bugs and missing
+features. Some problems are rooted rather deep in the design of the game,
+and fixing them is not trivial. With the release of 1.0, we get the time
+and chance to fix some of these and clean up the code. We'll also implement 
+more report dialogs, and rewrite some the the older ones.
+As for AI we already got a (rather) experimental version running, and we'll
+keep improving on it. As soon as it is even remotely interesting for the
+players, we'll make a beta release.
+
+best regards
+  the freeciv team

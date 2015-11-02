@@ -1,0 +1,158 @@
+                           =========================
+      		           Freeciv 1.0a documentation
+                           =========================
+		       
+This archive contains Freeciv version 1.0a, a free Civilization clone for 
+unix and X. This version only allows multiplayer games, which means you 
+can't play against computer-players.
+
+
+Compiling and installing:
+=========================
+Please read the file INSTALL for instruction on how to get Freeciv compiled 
+in the first place. It's really not very hard.
+
+
+Starting a new game:
+===================
+Server:
+
+  start the server:
+  % civserver
+
+  Help on possible options can be obtained with the --help option.
+
+  Now use the 'set' command to set the various variables for the game. 
+  You can get a list of the variables with the 'show' command.
+  
+  You can get option specific help with: help <option>
+
+  For example:
+
+  > help xsize
+  Affect: Width of map in squares
+  Minimum 40, Maximum 100, Default 80
+
+  > set xsize 100
+  > set ysize 80
+
+  Will make the map slightly bigger than the default(80x50).
+
+Client:
+  Now all the players that want to participate in the game should join. 
+  Suppose the server is running on the machine 'io'. Then players would 
+  join with a command like:
+
+  % civclient -s io
+
+Server:
+  When everybody has joined(use the (l)ist command to see who's in), the
+  server-op starts the game with the (s)start command:
+  > s
+  starting game.
+
+And the game is on!
+
+
+Playing the game:
+=================
+The server-op can save the game at any time using the 'save' command.
+Like:
+
+> save my-game
+
+As for the the clients, everything is pretty much as you would expect from
+a multiplayer civilization game. That is the players move at the same time.
+There's a turn timeout value, which is default set to 0 seconds(no timeout). 
+The server-op can alter this value at anytime with the 'set' command.
+
+Have a look at the online help system. All three mouse-buttons are in use,
+and documented in the help.
+
+Players can push the return key to announce end of turn, or just push
+the 'Turn done' button.
+
+Use the 'Players' dialog to see who has announced turn-done, and who you're 
+waiting for(hey bugger! you asleep or what?? ;).
+
+Use the lower input line for broadcasting a message to the other players.
+You can message a single player, say called 'Peter' by this syntax:
+peter: move that armor away *NOW*!
+
+
+Ending the game:
+================
+There are two ways in which a game can end.
+1) Only one surviving race.
+2) End year reached.
+
+A score-table will be shown in both cases. 
+Hint: The server-op can set the end-year runtime. This is nice when the winner
+is obvious, still you don't want to play through the boring 'cleanup phase'.
+
+
+Restoring a game - and playing a scenery:
+=========================================
+
+You can restore a saved game by using the server option: -f
+  % civserver -f oursave2001.sav
+
+Now the players can join the game:
+  % civclient -n Alexander -s io
+  
+Notice how the player-name is specified with the -n option. It's pretty 
+darn important that you type the correct name to be allowed in.
+
+The server-op can now start the game with 's' as usual. Notice that
+the players can join the game even if it has been started.
+
+Scenery
+=======
+The procedure for loading a scenery is the same as restoring a saved game.
+The sceneries are located in the 'freeciv/scenarios/' directory.
+
+You can start a scenario by using the server option -f
+  % civserver -f /scenarios/crecy-4.sav
+
+Notice how the player-name is specified with the -n option. It's pretty 
+darn important that you type the correct name to be allowed in.
+
+The server-op can get a list of allowed player-names in the scenery by typing 'l'.
+
+The server-op can start the game with 's' as usual. Notice that
+the players can join the game even if it has been started.
+Note: Read the .txt files in scenarios directory
+
+Bugs:
+=====
+Should you find any bugs then please send us an email specifying what's
+wrong. It might be helpful for us if you specify which OS/version/compiler
+you're using(use uname -a).
+
+We maintain a bug-list at the Freeciv homepage(address below).
+
+
+
+Homepage:
+=========
+We maintain a homepage for the game at:
+  http://www.daimi.aau.dk/~allan/freeciv.html
+
+You should checkout the page, as it contains much more information than
+this file and the online help. This is also where we'll inform about 
+new releases/bugs/fixes/competitions.
+
+
+New Releases:
+=============
+New releases will first be made available at:
+  ftp://ftp.daimi.aau.dk/pub/stud/pjunold
+
+
+Have fun and now go give'em hell!
+
+  The Freeciv Team:
+  
+     allan ove kjeldbjerg - allan@daimi.aau.dk
+     claus leth gregersen - leth@daimi.aau.dk
+     peter joachim unold  - pjunold@daimi.aau.dk

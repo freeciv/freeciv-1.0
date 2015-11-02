@@ -1,0 +1,53 @@
+#!/bin/sh
+#/********************************************************************** 
+# Freeciv - Copyright (C) 1996 - A Kjeldberg, L Gregersen, P Unold
+# script by Rene Schalburg
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2, or (at your option)
+#   any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#Purpose: exec civclient, after setting the XAPPLRESDIR
+#***********************************************************************/
+DIR=`dirname $0`
+if [ "$FREECIV_DATADIR" = "" ] ; then
+    FREECIV_DATADIR=$DIR/data; export FREECIV_DATADIR
+fi
+
+NAME=""
+OPT=""
+while [ -n "$1" ] ; do
+    case "$1" in 
+    -n|--name)
+	NAME=-n$2
+	shift
+	;;
+    -n*)
+	NAME=$1
+	;;
+    *)	OPT="$OPT $1"
+	;;
+    esac
+    shift
+done
+
+if [ "$TEST" != "" ] ; then
+    if [ -n "$NAME" ] ; then
+	echo 'civclient=' $DIR/civclient "$NAME" $OPT
+	banner "$NAME" $OPT
+    else
+	echo 'civclient=' $DIR/civclient $OPT
+	banner $OPT
+    fi
+else
+    if [ -n "$NAME" ] ; then
+	exec $DIR/civclient "$NAME" $OPT
+    else
+	exec $DIR/civclient $OPT
+    fi
+fi

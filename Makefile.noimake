@@ -1,0 +1,133 @@
+# Makefile for Freeciv
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+# If you for some reason don't want to use Imake, then try this Makefile.
+# The only part you properly wants to change is the XPM related lines
+# below, and the architecture specific lines.
+
+#
+# defs
+#
+CC=cc
+
+XPM_INCLUDE_DIR=-I/usr/include/X11
+#Example of how user pjunold got it running:
+#XPM_INCLUDE_DIR=-I/users/pjunold/xpm-3.4i/lib
+#XPM_LIB_DIR=-L/users/pjunold/xpm-3.4i/lib
+
+
+INCLUDE_DIR=include
+
+#
+# Compile flags
+#
+
+# linux/irix
+#CFLAGS=-c -g -Wall -ansi -I$(INCLUDE_DIR) $(XPM_INCLUDE_DIR)
+#irix cc compiler
+CFLAGS=-c -fullwarn -j -woff 835 -g -ansi -I$(INCLUDE_DIR) $(XPM_INCLUDE_DIR)
+# sunos
+#CFLAGS=-c -g -Wall -ansi -I$(INCLUDE_DIR) $(XPM_INCLUDE_DIR)
+
+#
+# Client link flags
+#
+
+# linux/irix
+CLFLAGS=-L/usr/X11/lib $(XPM_LIB_DIR) -lXpm -lXaw -lXt -lX11 
+# sunos
+CLFLAGS=-L/usr/X11/lib $(XPM_LIB_DIR) -lXpm -lXaw -lXt -lXmu -lX11 -lsocket
+#hpux
+#CLFLAGS=-L/usr/X11/lib $(XPM_LIB_DIR) -lXpm -lXmu -lXext -lXaw -lXt -lX11
+
+#
+# Server link flags
+#
+
+# linux/irix
+SLFLAGS=
+# sunos
+#SLFLAGS=-lsocket
+
+
+SERVER_OBJS= common/map.o server/civserver.o common/game.o \
+             common/unit.o common/tech.o common/city.o common/log.o \
+             server/sernet.o common/packets.o common/shared.o \
+             common/genlist.o common/registry.o common/player.o \
+             server/unithand.o server/maphand.o server/stdinhand.o \
+	     server/cityhand.o server/plrhand.o \
+	     server/mapgen.o server/handchat.o \
+	     server/gamehand.o server/gotohand.o server/diplhand.o \
+	     common/diptreaty.o
+
+CLIENT_OBJS= client/civclient.o \
+	     common/log.o client/xmain.o client/canvas.o client/menu.o \
+	     client/colors.o client/graphics.o common/map.o client/mapview.o \
+	     client/chatline.o client/clinet.o common/packets.o \
+             client/dialogs.o common/shared.o common/unit.o common/player.o \
+             common/game.o common/genlist.o common/registry.o  \
+             client/plrdlg.o client/mapctrl.o common/city.o client/citydlg.o \
+	     common/tech.o client/repodlgs.o client/ratesdlg.o \
+	     client/xstuff.o client/inputdlg.o client/finddlg.o \
+	     client/helpdlg.o client/diplodlg.o common/diptreaty.o \
+	     client/pixcomm.o client/optiondlg.o client/inteldlg.o \
+	     client/resources.o
+
+#
+# rules
+#
+all: civclient civserver
+
+civclient: $(CLIENT_OBJS)
+	$(CC) -w -o  civclient $(CLIENT_OBJS)  $(CLFLAGS)
+
+civserver: $(SERVER_OBJS)
+	$(CC) -w -o  civserver $(SERVER_OBJS)  $(SLFLAGS)
+
+client/helptab.c: client/civ-help
+	client/civ-help.pl client/civ-help client/helptab.c
+
+#include/Freeciv.h: data/Freeciv
+#	client/ad2c data/Freeciv >include/Freeciv.h
+
+#client/resources.c: include/Freeciv.h
+#	$(CC) $(CFLAGS) -o client/resources.o client/resources.c 
+
+client/helpdlg.o: client/helpdlg.c client/helptab.c
+
+
+.c.o:
+	$(CC) $(CFLAGS) -o $*.o $<
+
+clean:
+	rm -f *~ *# civserver civclient \
+           server/*~ server/*# server/*.o \
+	   client/*~ client/*# client/*.o \
+	   include/*~ include/*# \
+	   common/*~ common/*# common/*.o \
+           data/*~ data/*# data/*.o
+
+wc:
+	wc client/*.c common/*.c include/*.h server/*.c data/Freeciv
+
+tgz: clean
+	tar -cvf - * | gzip -9 >freeciv.tgz
+
+tgZ: clean
+	tar -cvf ../freeciv.tar *
+	compress ../freeciv.tar
+
+tags:
+	rm -f TAGS
+	ctags -a client/*.c include/*.h 

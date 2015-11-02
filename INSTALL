@@ -1,0 +1,74 @@
+Installing Freeciv:
+===================
+
+This file gives some basic instruction on how to compile and install 
+Freeciv. 
+
+Freeciv requires that the xpm-library is available on your system.
+The xpm-library is in wide use, and is properly already installed
+on your box. A number of the major X vendors have even started to 
+ship with xpm pre-installed. And more important all Linux(yeah!) 
+distributions we know of, comes with xpm.
+At the bottom is described how you install the xpm-library.
+
+
+Compiling freeciv
+=================
+Back to Freeciv. Have a look at the top of the Imakefile. There're a few
+parameters which you might want to alter.
+
+When done type 'xmkmf' and then just 'make'.
+
+
+When it doesn't compile:
+========================
+If you don't have xmkmf/Imake on your system the use the Makefile.noimake 
+file instead.
+
+If the errors are related to the xpm-library, then look in the section below
+about xpm.
+
+If the compilations halts due to missing X11 .h or lib files, then it's safe to 
+assume that Imake hasn't been installed properly on your system. Consider
+using the Makefile.noimake.
+
+Freeciv doesn't work with Xaw3d. So you have to link with the original
+Athena widget library.
+
+Ok - it compiled now - install it:
+==================================
+All Freeciv need is the files civclient, civserver and the files in
+the directory data/.
+
+When the client starts, it looks in the current directory for the
+data/ directory. You can override this by setting the environment
+variable FREECIV_DATADIR to point to another location, like:
+
+setenv FREECIV_DATADIR /usr/games/freeciv/data
+
+However the civ script located in the Freeciv main-directory, sets
+the FREECIV_DATADIR to point to DIR/data, where DIR is the directory where 
+the script is located, then runs civclient.
+
+Finally, if you're root, you should copy the file data/Freeciv into
+your app-defaults directory(properly /usr/lib/X11/app-defaults).
+
+Installing xpm-library
+======================
+
+Anyway if you don't have xpm installed then read the following 
+instruction:
+
+Fetch the file ftp://koala.inria.fr/pub/xpm/xpm-3.4i.tar.gz
+(Or u can fetch the file:  ftp://ftp.x.org/contrib/libraries/xpm.11.src.tar.Z)
+Untar it and uncompress the file and type the command xmkmf -a.
+
+If you HAVE root permissions, do a make install and you're done.
+
+If you only have normal user permissions, then just type make.
+Now the lib directory contains the xpm-library. You can now delete everything
+except 'libXpm*' and xpm.h. Next find the xpm related lines in the Imakefile 
+and change the xpm paths. There's an example there that shows what to do. 
+Finally navigate into the freeciv directory and type the command 'xmkmf'.
+Before running you should set the env. variable LD_LIBRARY_PATH to
+point to the directory containg libXpm(at least his goes for Sunos and Linux).

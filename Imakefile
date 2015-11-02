@@ -1,0 +1,66 @@
+XCOMM Imakefile for Freeciv
+XCOMM This program is free software; you can redistribute it and/or modify
+XCOMM it under the terms of the GNU General Public License as published by
+XCOMM the Free Software Foundation; either version 2, or (at your option)
+XCOMM any later version.
+XCOMM This program is distributed in the hope that it will be useful,
+XCOMM but WITHOUT ANY WARRANTY; without even the implied warranty of
+XCOMM MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+XCOMM GNU General Public License for more details.
+XCOMM You should have received a copy of the GNU General Public License
+XCOMM along with this program; if not, write to the Free Software
+XCOMM Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+XCOMM uncomment and specify your compiler below if you get an error
+XCOMM about unknown command 'cc' or 'gcc'
+XCOMM typically happens under solaris, where cc isn't distributed
+XCOMM as a default component anymore(use gcc instead)
+XCOMM CC = gcc
+
+XCOMM if your xpm library/includes is located in a none-standard directory
+XCOMM then specify it below - look at the user:pjunold example
+XPM_INCLUDE_DIR=/usr/include/X11
+XCOMM XPM_INCLUDE_DIR=/users/pjunold/xpm-3.4i/lib
+XCOMM XPM_LIB_DIR=-L/users/pjunold/xpm-3.4i/lib
+
+/**/# if you get compile errors related to socket/connect etc syscalls
+/**/# then uncomment the line below                                    
+/**/# SOCKLIB = -lsocket
+
+PROGRAMS = civclient civserver
+INCLUDES = -Iinclude -I$(XPM_INCLUDE_DIR)
+
+OBJS1=       client/civclient.o  \
+	     common/log.o client/xmain.o client/canvas.o client/menu.o \
+	     client/colors.o client/graphics.o common/map.o client/mapview.o \
+	     client/chatline.o client/clinet.o common/packets.o \
+             client/dialogs.o common/shared.o common/unit.o common/player.o \
+             common/game.o common/genlist.o common/registry.o common/mapgen.o \
+             client/plrdlg.o client/mapctrl.o common/city.o client/citydlg.o \
+	     common/tech.o client/repodlgs.o client/ratesdlg.o \
+	     client/xstuff.o client/inputdlg.o client/finddlg.o \
+	     client/helpdlg.o client/diplodlg.o common/diptreaty.o \
+	     client/pixcomm.o client/optiondlg.o client/inteldlg.o \
+	     client/resources.o
+
+OBJS2=       common/map.o server/civserver.o common/game.o \
+             common/unit.o common/tech.o common/city.o common/log.o \
+             server/sernet.o common/packets.o common/shared.o \
+             common/genlist.o common/registry.o common/player.o \
+             server/unithand.o server/maphand.o server/stdinhand.o \
+	     server/cityhand.o server/plrhand.o \
+	     common/mapgen.o server/handchat.o \
+	     server/gamehand.o server/gotohand.o server/diplhand.o \
+	     common/diptreaty.o
+
+CLI_LIBS = $(XPM_LIB_DIR) -lXpm XawClientLibs $(SOCKLIB) 
+SER_LIBS = $(SOCKLIB) 
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+ComplexProgramTarget_1(civclient, $(CLI_LIBS), $(SYSLIBS))
+ComplexProgramTarget_2(civserver, $(SER_LIBS), $(SYSLIBS))
+
+clean::
+	$(RM) $(OBJS1) $(OBJS2)
